@@ -8,6 +8,8 @@ import { SiteHeader } from "@/components/ui/site-header";
 import { Reveal } from "@/components/ui/reveal";
 import { SkillBar } from "@/components/ui/skill-bar";
 import { FaceHero } from "@/components/ui/face-hero";
+import { IDENTITY } from "@/lib/profile/leo-profile";
+import { leosAge } from "@/lib/profile/calculations";
 
 const LEFT_SKILLS = [
   { name: "Python", pct: 95 },
@@ -77,7 +79,7 @@ export default function Home() {
             <Reveal delay={0.15}>
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-1.5 mb-6 text-sm md:text-base">
                 {[
-                  ["age", "23"],
+                  ["age", String(leosAge() ?? IDENTITY.dateOfBirth.slice(0, 4))],
                   ["gender", "Male"],
                   ["language", "English, Malayalam, Hindi, Tamil"],
                   ["work", "Full-Stack developer"],
@@ -93,7 +95,7 @@ export default function Home() {
             <Reveal delay={0.2}>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="/Resume.pdf"
+                  href="/Resume.pdf?v=kwt-2026"
                   download="Leo-Joseph-CV.pdf"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors text-sm md:text-base font-medium"
                 >
@@ -101,7 +103,7 @@ export default function Home() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                 </a>
                 <a
-                  href="/Resume.pdf"
+                  href="/Resume.pdf?v=kwt-2026"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors text-sm md:text-base font-medium"
