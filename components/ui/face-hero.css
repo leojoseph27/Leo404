@@ -87,12 +87,15 @@
     );
 }
 
-.fh-name {
+.fh-name-stack {
   position: absolute;
   left: 7.5%;
   top: 50%;
   transform: translateY(-58%);
   z-index: 10;
+}
+
+.fh-name {
   font-weight: 700;
   font-size: clamp(2.4rem, 5.6vw, 5.2rem);
   line-height: 1.04;
@@ -251,12 +254,14 @@
 
   /* Mobile: same headline as desktop over the portrait's left side;
      the grayscale filter stays permanent — no reveal on touch. */
-  .fh-name {
-    position: absolute;
+  .fh-name-stack {
     left: 8%;
     top: 13.5%;
     transform: none;
     padding: 0;
+  }
+
+  .fh-name {
     font-size: clamp(2.5rem, 11vw, 5.2rem);
     line-height: 1.04;
   }
@@ -285,5 +290,93 @@
   .fh-touch-hint {
     bottom: 20px;
     right: 20px;
+  }
+}
+
+/* ---------- Chat with Leo AI CTA (below the hero underline) ---------- */
+
+.fh-chat-cta {
+  position: relative;
+  z-index: 10;
+  margin-top: 22px;
+  /* Same entrance choreography as the heading lines. */
+  opacity: 0;
+}
+
+.fh-name-stack.fh-in .fh-chat-cta {
+  animation: fh-rise 0.55s cubic-bezier(0.21, 0.65, 0.35, 1) 0.32s forwards;
+}
+
+.fh-chat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--fh-purple), #7e22ce);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow:
+    0 4px 18px rgba(168, 85, 247, 0.35),
+    0 0 0 0 rgba(168, 85, 247, 0);
+  transition:
+    transform 220ms cubic-bezier(0.21, 0.65, 0.35, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fh-chat-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(192, 132, 252, 0.7);
+  box-shadow:
+    0 8px 26px rgba(168, 85, 247, 0.5),
+    0 0 22px rgba(168, 85, 247, 0.35);
+}
+
+.fh-chat-btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow:
+    0 3px 12px rgba(168, 85, 247, 0.4),
+    0 0 10px rgba(168, 85, 247, 0.25);
+}
+
+.fh-chat-btn:focus-visible {
+  outline: 2px solid var(--fh-purple-light);
+  outline-offset: 3px;
+}
+
+.fh-chat-btn svg {
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fh-chat-cta {
+    opacity: 1;
+    animation: none !important;
+  }
+  .fh-chat-btn,
+  .fh-chat-btn:hover,
+  .fh-chat-btn:active {
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .fh-chat-cta {
+    margin-top: 18px;
+  }
+  .fh-chat-btn {
+    padding: 13px 22px;
+    font-size: 0.95rem;
+    /* Keep the tap target comfortable (>=44px tall). */
+    min-height: 44px;
   }
 }

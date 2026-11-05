@@ -50,8 +50,48 @@ function getCurrentTime(): string {
 
 type MessageItem = { text: string; sender: "user" | "bot"; time: string };
 
+// ---------------------------------------------------------------------------
+// Shared chatbot open/close store.
+//
+// The Chatbot widget is mounted once in app/layout.tsx. Anywhere else on
+// the page (e.g. the "Chat with Leo AI" hero button) can open that SAME
+// instance through openLeoChat() — one conversation, one state, no
+// duplicate widgets. useSyncExternalStore keeps consumers in sync without
+// a context provider spanning the whole layout.
+// ---------------------------------------------------------------------------
+
+let chatOpen = false;
+const chatListeners = new Set<() => void>();
+
+function setChatOpen(next: boolean) {
+  if (chatOpen === next) return;
+  chatOpen = next;
+  for (const l of chatListeners) l();
+}
+
+/** Open the existing Leo AI chatbot (same instance as the floating icon). */
+export function openLeoChat() {
+  setChatOpen(true);
+}
+
+function subscribeChatOpen(listener: () => void) {
+  chatListeners.add(listener);
+  return () => chatListeners.delete(listener);
+}
+
+function useChatOpen(): [boolean, (next: boolean) => void] {
+  const open = React.useSyncExternalStore(
+    subscribeChatOpen,
+    () => chatOpen,
+    () => false
+  );
+  return [open, setChatOpen];
+}
+
 export function Chatbot() {
-  const [open, setOpen] = useState(false);
+  // Open state lives in the shared store so other entry points
+  // (hero CTA, floating icon) drive the same single widget instance.
+  const [open, setOpen] = useChatOpen();
   const [tooltipShow, setTooltipShow] = useState(false);
   const [welcomeShown, setWelcomeShown] = useState(false);
   const [messages, setMessages] = useState<MessageItem[]>([]);
@@ -107,8 +147,8 @@ export function Chatbot() {
   }, [open]);
 
   const toggleChat = useCallback(() => {
-    setOpen((o) => !o);
-  }, []);
+    setOpen(!open);
+  }, [open, setOpen]);
 
   const addMessage = useCallback((text: string, sender: "user" | "bot") => {
     setMessages((m) => [

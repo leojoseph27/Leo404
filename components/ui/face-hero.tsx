@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { openLeoChat } from "@/components/ui/chatbot";
 import "./face-hero.css";
 
 /**
@@ -19,6 +20,7 @@ import "./face-hero.css";
 export function FaceHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
+  const nameStackRef = useRef<HTMLDivElement>(null);
   const wavesRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -58,7 +60,10 @@ export function FaceHero() {
     // either immediately (repeat visits, no boot loader), while the boot
     // overlay is mid-fade, or once it is fully gone. This keeps the text
     // from feeling slow on first load.
-    const startEntrance = () => nameEl.classList.add("fh-in");
+    const startEntrance = () => {
+      nameEl.classList.add("fh-in");
+      nameStackRef.current?.classList.add("fh-in");
+    };
     const bootOverlayFading = () => {
       const overlay = document.querySelector(
         'div[style*="9999"]'
@@ -289,11 +294,40 @@ export function FaceHero() {
           deep black the hero below emerges from — no visible seam. */}
       <div className="fh-fade" aria-hidden />
 
+      <div className="fh-name-stack" ref={nameStackRef}>
       <h1 className="fh-name" ref={nameRef}>
         <span className="fh-first">Let&rsquo;s Connect</span>
         <span className="fh-last">&amp; Collaborate</span>
         <hr className="fh-rule" />
       </h1>
+
+      {/* CTA: opens the SAME Leo AI chatbot instance as the floating
+          bottom-right icon (see openLeoChat in chatbot.tsx). Kept outside
+          the h1 so the heading semantics stay clean. */}
+      <div className="fh-chat-cta">
+        <button
+          type="button"
+          className="fh-chat-btn"
+          onClick={openLeoChat}
+          aria-label="Chat with Leo AI — opens the chat window"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Chat with Leo AI</span>
+        </button>
+      </div>
+      </div>
 
       {/* Mobile composition: full-bleed colour portrait background with
           the grayscale-to-colour reveal, name overlaid on the left. */}
