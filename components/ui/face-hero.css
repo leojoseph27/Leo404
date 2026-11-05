@@ -263,16 +263,25 @@
 
   /* Mobile: same headline as desktop over the portrait's left side;
      the grayscale filter stays permanent — no reveal on touch. */
+  /* Mobile: the stack (heading + underline + CTA) is positioned as one
+     unit, raised to 11% and compacted so the CTA always ends above the
+     portrait's subject (face/body occupy the centre-right from ~45%
+     height down). transform stays none so it never becomes a containing
+     block oddity. */
   .fh-name-stack {
     left: 8%;
-    top: 13.5%;
+    top: 11%;
     transform: none;
     padding: 0;
   }
 
   .fh-name {
-    font-size: clamp(2.5rem, 11vw, 5.2rem);
+    font-size: clamp(2.4rem, 10.5vw, 4.6rem);
     line-height: 1.04;
+  }
+
+  .fh-rule {
+    margin-top: 18px;
   }
   .fh-rule {
     margin-top: 26px;
@@ -382,11 +391,17 @@
 
 @media (max-width: 768px) {
   .fh-chat-cta {
-    margin-top: 18px;
+    /* Mobile: stays in flow directly below the underline. The heading is
+       raised (top 11%) and the CTA compacted so the button always ends
+       above the portrait's subject (face/body), which occupies the
+       centre-right of the hero from ~45% height down. */
+    position: relative;
+    margin-top: 16px;
+    z-index: 10;
   }
   .fh-chat-btn {
-    padding: 13px 22px;
-    font-size: 0.95rem;
+    padding: 11px 18px;
+    font-size: 0.9rem;
     /* Keep the tap target comfortable (>=44px tall). */
     min-height: 44px;
   }
