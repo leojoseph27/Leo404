@@ -145,3 +145,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* Interactive affordance: real buttons and links always show the hand
+   pointer on desktop (native button styling defaults to the arrow). */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a,
+summary {
+  cursor: pointer;
+}
